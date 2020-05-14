@@ -1,0 +1,6 @@
+digraph {
+    IDLE -> RUNNING [label="initialized and started"];
+    RUNNING->CONNECTED [label="connected to the network"];
+    CONNECTED->GREETING [label="started greeting all known nodes"];
+    GREETING->READY [label="all known nodes greeted"];
+}

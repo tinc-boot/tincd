@@ -1,0 +1,8 @@
+title Greet known node
+
+loop till success
+self->known node: API.Exchange(self description)
+known node->known node: save description
+known node->self: all known nodes
+self->self: import all nodes
+end
