@@ -1,6 +1,6 @@
 # TINCD
 
-[![go.dev reference](https://img.shields.io/badge/go.dev-reference-007d9c?logo=go&logoColor=white&style=flat-square)](https://pkg.go.dev/github.com/tinc-boot/tincd)
+[![go.dev reference](https://img.shields.io/badge/go.dev-reference-007d9c?logo=go&logoColor=white&style=flat-square)](https://godoc.org/github.com/tinc-boot/tincd)
 
 
 This is a supporting library for running tincd daemon from Go with tinc-web-boot supporting protocol.
