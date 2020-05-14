@@ -3,10 +3,10 @@ package apiserver
 import (
 	"context"
 	"github.com/reddec/jsonrpc2"
+	"github.com/tinc-boot/tincd/api"
 	"net"
 	"net/http"
 	"time"
-	"tinc-boot/tincd/api"
 )
 
 func RunHTTP(global context.Context, network, binding string, handler api.API) error {

@@ -3,10 +3,10 @@ package tincd
 import (
 	"context"
 	"fmt"
+	"github.com/tinc-boot/tincd/internal"
+	"github.com/tinc-boot/tincd/network"
 	"net"
 	"path/filepath"
-	"tinc-boot/tincd/internal"
-	"tinc-boot/tincd/network"
 )
 
 // Base TINCD running instance. All methods should be goroutine safe

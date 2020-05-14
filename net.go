@@ -3,6 +3,11 @@ package tincd
 import (
 	"context"
 	"fmt"
+	"github.com/tinc-boot/tincd/api/impl/apiclient"
+	"github.com/tinc-boot/tincd/api/impl/apiserver"
+	"github.com/tinc-boot/tincd/internal"
+	"github.com/tinc-boot/tincd/network"
+	"github.com/tinc-boot/tincd/runner"
 	"log"
 	"path/filepath"
 	"sort"
@@ -10,11 +15,6 @@ import (
 	"strings"
 	"sync"
 	"time"
-	"tinc-boot/tincd/api/impl/apiclient"
-	"tinc-boot/tincd/api/impl/apiserver"
-	"tinc-boot/tincd/internal"
-	"tinc-boot/tincd/network"
-	"tinc-boot/tincd/runner"
 )
 
 type netImpl struct {

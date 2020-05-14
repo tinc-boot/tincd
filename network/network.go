@@ -8,6 +8,7 @@ import (
 	"encoding/binary"
 	"encoding/pem"
 	"fmt"
+	"github.com/tinc-boot/tincd/utils"
 	"io/ioutil"
 	"math/rand"
 	"net"
@@ -17,7 +18,6 @@ import (
 	"strings"
 	"sync"
 	"time"
-	"tinc-boot/tincd/utils"
 )
 
 // Single network configuration

@@ -3,8 +3,8 @@ package apiclient
 import (
 	"context"
 	client "github.com/reddec/jsonrpc2/client"
+	network "github.com/tinc-boot/tincd/network"
 	"sync/atomic"
-	network "tinc-boot/tincd/network"
 )
 
 func Default() *APIClient {

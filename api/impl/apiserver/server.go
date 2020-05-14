@@ -6,8 +6,8 @@ import (
 	"context"
 	"encoding/json"
 	jsonrpc2 "github.com/reddec/jsonrpc2"
-	api "tinc-boot/tincd/api"
-	network "tinc-boot/tincd/network"
+	api "github.com/tinc-boot/tincd/api"
+	network "github.com/tinc-boot/tincd/network"
 )
 
 func RegisterAPI(router *jsonrpc2.Router, wrap api.API) []string {

@@ -2,9 +2,9 @@ package network
 
 import (
 	"fmt"
+	"github.com/tinc-boot/tincd/config"
 	"strconv"
 	"strings"
-	"tinc-boot/tincd/config"
 )
 
 // Main configuration for network (tinc.conf)

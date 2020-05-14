@@ -1,4 +1,4 @@
-module tinc-boot/tincd
+module github.com/tinc-boot/tincd
 
 go 1.13
 

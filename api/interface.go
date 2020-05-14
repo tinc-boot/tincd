@@ -2,7 +2,7 @@ package api
 
 import (
 	"context"
-	"tinc-boot/tincd/network"
+	"github.com/tinc-boot/tincd/network"
 )
 
 type API interface {

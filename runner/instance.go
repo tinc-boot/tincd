@@ -3,12 +3,12 @@ package runner
 import (
 	"bufio"
 	"context"
+	"github.com/tinc-boot/tincd/utils"
 	"io"
 	"log"
 	"os/exec"
 	"path/filepath"
 	"regexp"
-	"tinc-boot/tincd/utils"
 )
 
 var (
