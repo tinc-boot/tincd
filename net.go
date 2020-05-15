@@ -28,7 +28,7 @@ type netImpl struct {
 	err  error
 }
 
-func (impl *netImpl) initAndStart(global context.Context) error {
+func (impl *netImpl) initAndStart(global context.Context, withSudo bool) error {
 	if err := impl.definition.Prepare(global, impl.tincBin); err != nil {
 		return fmt.Errorf("configure: %w", err)
 	}
@@ -57,7 +57,7 @@ func (impl *netImpl) initAndStart(global context.Context) error {
 		defer cancel()
 		defer impl.events.Stopped.Emit(network.NetworkID{Name: impl.definition.Name()})
 		defer close(impl.done)
-		impl.err = impl.run(absDir, self, ctx)
+		impl.err = impl.run(absDir, withSudo, self, ctx)
 		impl.activePeers = sync.Map{}
 	}()
 	return nil
@@ -111,7 +111,7 @@ func (impl *netImpl) IsRunning() bool {
 	}
 }
 
-func (impl *netImpl) run(absDir string, self *network.Node, global context.Context) error {
+func (impl *netImpl) run(absDir string, withSudo bool, self *network.Node, global context.Context) error {
 	ctx, abort := context.WithCancel(global)
 	defer abort()
 
@@ -123,7 +123,7 @@ func (impl *netImpl) run(absDir string, self *network.Node, global context.Conte
 		defer wg.Done()
 		defer abort()
 
-		for event := range runner.RunTinc(global, impl.tincBin, absDir) {
+		for event := range runner.RunTinc(global, withSudo, impl.tincBin, absDir) {
 			if event.Add {
 				impl.activePeers.Store(event.Peer.Node, event)
 			} else {

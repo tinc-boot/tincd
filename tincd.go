@@ -29,8 +29,9 @@ type Tincd interface {
 	Definition() *network.Network
 }
 
-// Start tincd (and tinc-web-boot protocol) services. Not blocking after start
-func Start(ctx context.Context, nw *network.Network) (*netImpl, error) {
+// Start tincd (and tinc-web-boot protocol) services. Not blocking after start. If sudo is true it will try to ask
+// administrative privileges for each platform (graphically if possible)
+func Start(ctx context.Context, nw *network.Network, sudo bool) (*netImpl, error) {
 	if !nw.IsDefined() {
 		return nil, fmt.Errorf("network %s is not defined", nw.Name())
 	}
@@ -42,16 +43,18 @@ func Start(ctx context.Context, nw *network.Network) (*netImpl, error) {
 		definition: nw,
 		tincBin:    tincBin,
 	}
-	return impl, impl.initAndStart(ctx)
+	return impl, impl.initAndStart(ctx, sudo)
 }
 
-// Start tincd (and tinc-web-boot protocol) services based on configuration in directory. Not blocking after start
-func StartFromDir(ctx context.Context, directory string) (*netImpl, error) {
+// Start tincd (and tinc-web-boot protocol) services based on configuration in directory. Not blocking after start.
+// If sudo is true it will try to ask
+// administrative privileges for each platform (graphically if possible)
+func StartFromDir(ctx context.Context, directory string, sudo bool) (*netImpl, error) {
 	abs, err := filepath.Abs(directory)
 	if err != nil {
 		return nil, err
 	}
-	return Start(ctx, &network.Network{Root: abs})
+	return Start(ctx, &network.Network{Root: abs}, sudo)
 }
 
 // Create (but not start) and configure new network in specified location with pre-parsed subnet. IP will be generated

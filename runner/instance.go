@@ -6,6 +6,7 @@ import (
 	"github.com/tinc-boot/tincd/utils"
 	"io"
 	"log"
+	"os"
 	"os/exec"
 	"path/filepath"
 	"regexp"
@@ -58,26 +59,42 @@ type SubnetEvent struct {
 	}
 }
 
+func makeArgs(tincBin string, dir string) []string {
+	return []string{tincBin, "-D", "-d", "-d", "-d", "-d",
+		"--pidfile", filepath.Join(dir, "pid.run"),
+		"-c", dir}
+}
+
 // Run tinc application and scan output for events
-func RunTinc(global context.Context, tincBin string, dir string) <-chan SubnetEvent {
+func RunTinc(global context.Context, askSudo bool, tincBin string, dir string) <-chan SubnetEvent {
 	ctx, abort := context.WithCancel(global)
 
 	var events = make(chan SubnetEvent)
 
 	reader, writer := io.Pipe()
 	scanner := bufio.NewScanner(reader)
+	args := makeArgs(tincBin, dir)
+	if askSudo {
+		args = withSudo(args)
+	}
 
-	cmd := exec.CommandContext(ctx, tincBin, "-D", "-d", "-d", "-d", "-d",
-		"--pidfile", filepath.Join(dir, "pid.run"),
-		"-c", dir)
+	logfile, err := os.Create(filepath.Join(dir, "log.txt"))
+	if err != nil {
+		panic(err)
+	}
+	bufferedLogFile := bufio.NewWriter(logfile)
+
+	cmd := exec.CommandContext(ctx, args[0], args[1:]...)
 	cmd.Dir = dir
-	cmd.Stderr = writer
+	cmd.Stderr = io.MultiWriter(writer, bufferedLogFile)
 	utils.SetCmdAttrs(cmd)
-	cmd.Stdout = writer
+	cmd.Stdout = io.MultiWriter(writer, bufferedLogFile)
 
 	go func() {
 		defer writer.Close()
 		defer abort()
+		defer logfile.Close()
+		defer bufferedLogFile.Flush()
 		err := cmd.Run()
 		if err != nil {
 			log.Println("run tincd:", err)
@@ -95,6 +112,7 @@ func RunTinc(global context.Context, tincBin string, dir string) <-chan SubnetEv
 					return
 				}
 			}
+			_ = bufferedLogFile.Flush()
 		}
 	}()
 
