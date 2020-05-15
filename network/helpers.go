@@ -15,7 +15,7 @@ func ConfigFromFile(name string) (*Config, error) {
 }
 
 // List networks in directory
-func List(directory string) ([]Network, error) {
+func List(directory string) ([]*Network, error) {
 	abs, err := filepath.Abs(directory)
 	if err != nil {
 		return nil, err
@@ -24,10 +24,10 @@ func List(directory string) ([]Network, error) {
 	if err != nil {
 		return nil, err
 	}
-	var ans []Network
+	var ans []*Network
 	for _, item := range list {
 		if item.IsDir() && IsValidName(item.Name()) {
-			ans = append(ans, Network{Root: filepath.Join(abs, item.Name())})
+			ans = append(ans, &Network{Root: filepath.Join(abs, item.Name())})
 		}
 	}
 	return ans, nil
