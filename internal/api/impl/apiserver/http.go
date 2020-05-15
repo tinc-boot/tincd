@@ -3,7 +3,7 @@ package apiserver
 import (
 	"context"
 	"github.com/reddec/jsonrpc2"
-	"github.com/tinc-boot/tincd/api"
+	"github.com/tinc-boot/tincd/internal/api"
 	"net"
 	"net/http"
 	"time"

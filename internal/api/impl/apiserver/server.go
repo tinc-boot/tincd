@@ -6,7 +6,7 @@ import (
 	"context"
 	"encoding/json"
 	jsonrpc2 "github.com/reddec/jsonrpc2"
-	api "github.com/tinc-boot/tincd/api"
+	api "github.com/tinc-boot/tincd/internal/api"
 	network "github.com/tinc-boot/tincd/network"
 )
 

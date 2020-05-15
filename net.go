@@ -3,9 +3,9 @@ package tincd
 import (
 	"context"
 	"fmt"
-	"github.com/tinc-boot/tincd/api/impl/apiclient"
-	"github.com/tinc-boot/tincd/api/impl/apiserver"
 	"github.com/tinc-boot/tincd/internal"
+	"github.com/tinc-boot/tincd/internal/api/impl/apiclient"
+	"github.com/tinc-boot/tincd/internal/api/impl/apiserver"
 	"github.com/tinc-boot/tincd/network"
 	"github.com/tinc-boot/tincd/runner"
 	"log"
