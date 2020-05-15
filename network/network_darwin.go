@@ -6,7 +6,6 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
-	"path/filepath"
 	"regexp"
 	"strconv"
 	"strings"
@@ -31,9 +30,7 @@ func (network *Network) findAvailableTap() (string, error) {
 	if err != nil {
 		return "", err
 	}
-
-	storage := &Storage{Root: filepath.Dir(network.Root)}
-	nets, err := storage.List()
+	nets, err := List(network.Root)
 	if err != nil {
 		return "", err
 	}
