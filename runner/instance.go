@@ -84,21 +84,30 @@ func RunTinc(global context.Context, askSudo bool, tincBin string, dir string) <
 	}
 	bufferedLogFile := bufio.NewWriter(logfile)
 
-	cmd := exec.CommandContext(ctx, args[0], args[1:]...)
+	cmd := exec.Command(args[0], args[1:]...)
 	cmd.Dir = dir
 	cmd.Stderr = io.MultiWriter(writer, bufferedLogFile)
 	utils.SetCmdAttrs(cmd)
 	cmd.Stdout = io.MultiWriter(writer, bufferedLogFile)
+
+	child, cancel := context.WithCancel(ctx)
+	go func() {
+		defer cancel()
+		<-child.Done()
+		killProcess(cmd)
+	}()
 
 	go func() {
 		defer writer.Close()
 		defer abort()
 		defer logfile.Close()
 		defer bufferedLogFile.Flush()
+		defer cancel()
 		err := cmd.Run()
 		if err != nil {
 			log.Println("run tincd:", err)
 		}
+
 	}()
 
 	go func() {
