@@ -10,7 +10,7 @@ import (
 func DetectTincBinary() (string, error) {
 	var possibleBinary = "tincd.exe"
 	if v, err := os.Stat(possibleBinary); err == nil && !v.IsDir() {
-		return possibleBinary, nil
+		return filepath.Abs(possibleBinary)
 	}
 	// look near executable
 	execPath, err := os.Executable()
