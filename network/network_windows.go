@@ -3,6 +3,7 @@ package network
 import (
 	"context"
 	"fmt"
+	"github.com/tinc-boot/tincd/utils"
 	"log"
 	"net"
 	"os"
@@ -41,7 +42,7 @@ func (network *Network) postConfigure(ctx context.Context, config *Config, tincB
 	cmd.Dir = filepath.Dir(tapInstaller)
 	cmd.Stderr = os.Stderr
 	cmd.Stdout = os.Stdout
-
+	utils.SetCmdAttrs(cmd)
 	err = cmd.Run()
 	if err != nil {
 		return err
@@ -77,6 +78,7 @@ func (network *Network) postConfigure(ctx context.Context, config *Config, tincB
 		"name", "=", newInterface, "newname", "=", config.Interface)
 	cmd.Stderr = os.Stderr
 	cmd.Stdout = os.Stdout
+	utils.SetCmdAttrs(cmd)
 	return cmd.Run()
 }
 
