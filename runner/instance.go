@@ -67,7 +67,6 @@ func makeArgs(tincBin string, dir string) []string {
 
 // Run tinc application and scan output for events
 func RunTinc(global context.Context, askSudo bool, tincBin string, dir string) <-chan SubnetEvent {
-	ctx, abort := context.WithCancel(global)
 
 	var events = make(chan SubnetEvent)
 
@@ -89,16 +88,17 @@ func RunTinc(global context.Context, askSudo bool, tincBin string, dir string) <
 	utils.SetCmdAttrs(cmd)
 	cmd.Stdout = io.MultiWriter(writer, logfile)
 
-	child, cancel := context.WithCancel(ctx)
+	child, cancel := context.WithCancel(global)
 	go func() {
+		// kill process when context canceled
 		defer cancel()
 		<-child.Done()
 		killProcess(cmd)
 	}()
 
 	go func() {
+		// run process, cancel context after
 		defer writer.Close()
-		defer abort()
 		defer logfile.Close()
 		defer cancel()
 		err := cmd.Run()
@@ -109,13 +109,14 @@ func RunTinc(global context.Context, askSudo bool, tincBin string, dir string) <
 	}()
 
 	go func() {
+		// read events from stdout, stderr
 		defer close(events)
-		defer abort()
+		defer cancel()
 		for scanner.Scan() {
 			if event := fromLine(scanner.Text()); event != nil {
 				select {
 				case events <- *event:
-				case <-ctx.Done():
+				case <-global.Done():
 					return
 				}
 			}

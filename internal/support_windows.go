@@ -19,7 +19,7 @@ func DetectTincBinary() (string, error) {
 	}
 	binary := digAround(filepath.Dir(execPath))
 	if binary != "" {
-		return binary, nil
+		return filepath.Abs(binary)
 	}
 	return exec.LookPath(possibleBinary)
 }
