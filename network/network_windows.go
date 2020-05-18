@@ -32,7 +32,11 @@ func (network *Network) postConfigure(ctx context.Context, config *Config, tincB
 	if err != nil {
 		return err
 	}
-
+	absFile, err := filepath.Abs(tapInstaller)
+	if err != nil {
+		return err
+	}
+	tapInstaller = absFile
 	cmd := exec.CommandContext(ctx, tapInstaller, "install", "OemWin2k.inf", "tap0901")
 	cmd.Dir = filepath.Dir(tapInstaller)
 	cmd.Stderr = os.Stderr
