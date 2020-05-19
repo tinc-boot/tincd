@@ -1,6 +1,6 @@
 package network
 
-//go:generate events-gen -p network -E Events -s -P -o events.go
+//go:generate events-gen -p network -E Events -s -P -o events.go -e Emitter
 
 //event:"Stopped"
 type NetworkID struct {

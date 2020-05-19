@@ -96,6 +96,27 @@ func (bus *Events) Sink(sink func(eventName string, payload interface{})) *Event
 	})
 	return bus
 }
+func (bus *Events) Emitter() *emitterEvents {
+	return &emitterEvents{events: bus}
+}
+
+type emitterEvents struct {
+	events *Events
+}
+
+func (emitter *emitterEvents) Stopped(payload NetworkID) {
+	emitter.events.Stopped.Emit(payload)
+}
+func (emitter *emitterEvents) PeerDiscovered(payload PeerID) {
+	emitter.events.PeerDiscovered.Emit(payload)
+}
+func (emitter *emitterEvents) PeerJoined(payload PeerID) {
+	emitter.events.PeerJoined.Emit(payload)
+}
+func (emitter *emitterEvents) PeerLeft(payload PeerID) {
+	emitter.events.PeerLeft.Emit(payload)
+}
+
 func (bus *Events) SubscribeAll(listener interface {
 	Stopped(payload NetworkID)
 	PeerDiscovered(payload PeerID)
